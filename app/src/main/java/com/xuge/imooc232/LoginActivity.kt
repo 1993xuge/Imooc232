@@ -40,11 +40,6 @@ class LoginActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor>
         email.setText(Settings.email)
         password.setText(Settings.password)
 
-        val mainFragment = MainFragment()
-        Log.d("xuge", "onCreate  -->  ${mainFragment}")
-        Log.d("xuge", "onCreate  -->  ${mainFragment.presenter}")
-        Log.d("xuge", "onCreate  -->  ${mainFragment.presenter.view}")
-
         // Set up the login form.
         populateAutoComplete()
         password.setOnEditorActionListener(TextView.OnEditorActionListener { _, id, _ ->
