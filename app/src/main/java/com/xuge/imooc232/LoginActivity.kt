@@ -17,10 +17,12 @@ import android.support.v4.app.LoaderManager
 import android.support.v4.content.CursorLoader
 import android.support.v4.content.Loader
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import com.xuge.mvp.impl.MainFragment
 import kotlinx.android.synthetic.main.activity_login.*
 import java.util.ArrayList
 
@@ -37,6 +39,11 @@ class LoginActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor>
 
         email.setText(Settings.email)
         password.setText(Settings.password)
+
+        val mainFragment = MainFragment()
+        Log.d("xuge", "onCreate  -->  ${mainFragment}")
+        Log.d("xuge", "onCreate  -->  ${mainFragment.presenter}")
+        Log.d("xuge", "onCreate  -->  ${mainFragment.presenter.view}")
 
         // Set up the login form.
         populateAutoComplete()
