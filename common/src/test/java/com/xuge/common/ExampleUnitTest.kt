@@ -1,5 +1,8 @@
 package com.xuge.common
 
+import com.xuge.common.ext.no
+import com.xuge.common.ext.otherwise
+import com.xuge.common.ext.yes
 import org.junit.Assert
 import org.junit.Test
 

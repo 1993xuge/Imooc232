@@ -1,4 +1,4 @@
-package com.xuge.common
+package com.xuge.common.ext
 
 sealed class BooleanExt<out T>
 

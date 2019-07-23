@@ -1,4 +1,4 @@
-package com.xuge.common
+package com.xuge.common.sharedpreferences
 
 import android.content.Context
 import kotlin.properties.ReadWriteProperty

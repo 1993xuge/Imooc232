@@ -2,6 +2,7 @@ package com.xuge.mvp.impl
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import com.xuge.mvp.IMvpView
 import com.xuge.mvp.IPresenter
 import kotlin.reflect.KClass
@@ -26,6 +27,7 @@ abstract class BaseFragment<out P : BasePresenter<BaseFragment<P>>> : IMvpView<P
                 yield(thisClass.supertypes)
                 thisClass = thisClass.supertypes.firstOrNull()?.jvmErasure ?: break
             }
+            Log.d("xuge", "thisClass = ${thisClass.simpleName}")
         }.flatMap {
             it.flatMap { it.arguments }.asSequence()
         }.first {
