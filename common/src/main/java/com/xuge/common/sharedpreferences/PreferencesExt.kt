@@ -12,12 +12,14 @@ class Preference<T>(val context: Context, val name: String, val default: T, val 
     }
 
     override fun getValue(thisRef: Any?, property: KProperty<*>): T {
-        return findPreference(name)
+        return findPreference(findProperName(property))
     }
 
     override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
-        putPreference(name, value)
+        putPreference(findProperName(property), value)
     }
+
+    private fun findProperName(property: KProperty<*>) = if(name.isEmpty()) property.name else name
 
     private fun findPreference(key: String): T {
         return when (default) {

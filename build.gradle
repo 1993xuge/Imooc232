@@ -7,6 +7,9 @@ buildscript {
 
     ext.okhttp_version = '3.10.0'
     repositories {
+        maven{
+            url "http://maven.aliyun.com/nexus/content/groups/public"
+        }
         google()
         jcenter()
         
@@ -21,6 +24,9 @@ buildscript {
 
 allprojects {
     repositories {
+        maven{
+            url "http://maven.aliyun.com/nexus/content/groups/public"
+        }
         google()
         jcenter()
         
