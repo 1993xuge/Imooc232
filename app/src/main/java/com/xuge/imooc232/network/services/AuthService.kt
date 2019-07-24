@@ -1,6 +1,7 @@
 package com.xuge.imooc232.network.services
 
 import com.xuge.imooc232.network.entities.AuthorizationReq
+import com.xuge.imooc232.network.entities.AuthorizationRsp
 import com.xuge.imooc232.network.retrofit
 import com.xuge.imooc232.settings.Configs
 import retrofit2.Response
@@ -16,7 +17,7 @@ interface AuthApi {
     fun createAuthorization(
         @Body req: AuthorizationReq,
         @Path("fingerPrint") fingerPrint: String = Configs.Account.fingerPrint
-    )
+    ): Observable<AuthorizationRsp>
 
     @DELETE("/authorizations/{id}")
     fun deleteAuthorization(@Path("id") id: Int): Observable<Response<Any>>
