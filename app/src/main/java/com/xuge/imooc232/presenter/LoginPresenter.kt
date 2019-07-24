@@ -1,5 +1,6 @@
 package com.xuge.imooc232.presenter
 
+import com.xuge.imooc232.BuildConfig
 import com.xuge.imooc232.model.account.AccountManager
 import com.xuge.imooc232.view.LoginActivity
 import com.xuge.mvp.impl.BasePresenter
@@ -28,6 +29,10 @@ class LoginPresenter : BasePresenter<LoginActivity>() {
 
     override fun onResume() {
         super.onResume()
-        view.onDataInit(AccountManager.username, AccountManager.passwd)
+        if(BuildConfig.DEBUG){
+            view.onDataInit(BuildConfig.testUserName, BuildConfig.testPassword)
+        } else {
+            view.onDataInit(AccountManager.username, AccountManager.passwd)
+        }
     }
 }
