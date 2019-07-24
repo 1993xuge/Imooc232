@@ -1,8 +1,11 @@
 package com.xuge.imooc232.network.entities
 
+import android.os.Parcelable
 import com.xuge.common.anno.PoKo
+import kotlinx.android.parcel.Parcelize
 
 @PoKo
+@Parcelize
 data class User(var login: String,
                 var avatar_url: String,
                 var html_url: String,
@@ -25,4 +28,4 @@ data class User(var login: String,
                 var total_private_repos: Int,
                 var owned_private_repos: Int,
                 var disk_usage: Int,
-                var collaborators: Int)
+                var collaborators: Int):Parcelable
