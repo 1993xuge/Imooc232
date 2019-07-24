@@ -1,7 +1,7 @@
 package com.xuge.imooc232.network.interceptors
 
 import android.util.Base64
-import com.xuge.imooc232.model.AccountManager
+import com.xuge.imooc232.model.account.AccountManager
 import okhttp3.Interceptor
 import okhttp3.Response
 

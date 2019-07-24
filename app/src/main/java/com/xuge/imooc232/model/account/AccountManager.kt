@@ -84,6 +84,8 @@ object AccountManager {
         }
 
     fun logout() = AuthService.deleteAuthorization(authId)
+        .subscribeOn(AndroidSchedulers.mainThread())
+        .observeOn(Schedulers.io())
         .doOnNext {
             if (it.isSuccessful) {
                 authId = -1
