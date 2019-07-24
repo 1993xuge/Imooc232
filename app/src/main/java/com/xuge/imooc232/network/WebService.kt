@@ -2,6 +2,8 @@ package com.xuge.imooc232.network
 
 import com.xuge.common.ext.ensureDir
 import com.xuge.imooc232.AppContext
+import com.xuge.imooc232.network.interceptors.AcceptInterceptor
+import com.xuge.imooc232.network.interceptors.AuthInterceptor
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -27,6 +29,8 @@ val retrofit by lazy {
                 .readTimeout(60, TimeUnit.SECONDS)
                 .writeTimeout(60, TimeUnit.SECONDS)
                 .cache(Cache(cacheFile, 1024 * 1024 * 1024))
+                .addInterceptor(AcceptInterceptor())
+                .addInterceptor(AuthInterceptor())
                 .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
                 .build()
         )
