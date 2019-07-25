@@ -69,6 +69,8 @@ dependencies {
     api 'com.squareup.retrofit2:converter-gson:2.4.0'
     api 'com.squareup.retrofit2:adapter-rxjava:2.3.0'
 
+    api 'com.google.code.findbugs:jsr305:3.0.2'
+
     api 'com.github.tony19:logback-android-core:1.1.1-6'
     api('com.github.tony19:logback-android-classic:1.1.1-6') {
         // workaround issue #73

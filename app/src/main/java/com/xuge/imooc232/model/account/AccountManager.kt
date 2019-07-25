@@ -10,8 +10,6 @@ import com.xuge.imooc232.utils.fromJson
 import com.xuge.imooc232.utils.pref
 import retrofit2.HttpException
 import rx.Observable
-import rx.android.schedulers.AndroidSchedulers
-import rx.schedulers.Schedulers
 
 interface OnAccountStateChangeListener {
     fun onLogin(user: User)
@@ -80,8 +78,6 @@ object AccountManager {
             currentUser = it
             notifyLogin(it)
         }
-        .observeOn(AndroidSchedulers.mainThread()) // 结果线程
-        .subscribeOn(Schedulers.io()) // 执行线程
 
     fun logout() = AuthService.deleteAuthorization(authId)
         .doOnNext {
@@ -94,8 +90,6 @@ object AccountManager {
                 throw HttpException(it)
             }
         }
-        .subscribeOn(AndroidSchedulers.mainThread())
-        .observeOn(Schedulers.io())
 
     class AccountException(val authorizationRsp: AuthorizationRsp) : Exception("Already logged in.")
 }
