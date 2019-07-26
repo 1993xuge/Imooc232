@@ -29,8 +29,8 @@ android {
     }
     buildTypes {
         debug {
-            buildConfigField "String", "testUserName", '"'+project.username+'"'
-            buildConfigField "String", "testPassword", '"'+project.password+'"'
+            buildConfigField "String", "testUserName", '"'+project.login_name+'"'
+            buildConfigField "String", "testPassword", '"'+project.login_password+'"'
         }
         release {
             buildConfigField "String", "testUserName", '""'
