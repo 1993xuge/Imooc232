@@ -104,4 +104,5 @@ dependencies {
 
     implementation project(":common")
     implementation project(":mvp")
+    implementation project(":layout")
 }
