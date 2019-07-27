@@ -9,6 +9,7 @@ import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
+import com.bennyhuo.tieguanyin.annotations.ActivityBuilder
 import com.xuge.common.ext.otherwise
 import com.xuge.common.ext.yes
 import com.xuge.imooc232.R
@@ -18,7 +19,7 @@ import com.xuge.mvp.impl.BaseActivity
 import kotlinx.android.synthetic.main.activity_login.*
 import org.jetbrains.anko.toast
 
-//@ActivityBuilder(flags = [Intent.FLAG_ACTIVITY_NO_HISTORY])
+@ActivityBuilder(flags = [Intent.FLAG_ACTIVITY_NO_HISTORY])
 class LoginActivity : BaseActivity<LoginPresenter>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,7 +79,7 @@ class LoginActivity : BaseActivity<LoginPresenter>() {
     fun onLoginSuccess() {
         toast("登陆成功")
         showProgress(false)
-//        startMainActivity()
+        startMainActivity()
     }
 
     fun onDataInit(name: String, passwd: String) {
