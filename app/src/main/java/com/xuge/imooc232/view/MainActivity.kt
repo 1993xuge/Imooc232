@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
+import com.bennyhuo.github.view.fragments.AboutFragment
 import com.bennyhuo.tieguanyin.annotations.ActivityBuilder
 import com.xuge.common.ext.no
 import com.xuge.common.ext.otherwise
@@ -14,6 +15,7 @@ import com.xuge.imooc232.model.account.OnAccountStateChangeListener
 import com.xuge.imooc232.network.entities.User
 import com.xuge.imooc232.utils.doOnLayoutAvailable
 import com.xuge.imooc232.utils.loadWithGlide
+import com.xuge.imooc232.utils.showFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.nav_header_main.*
@@ -27,6 +29,7 @@ class MainActivity : AppCompatActivity(), OnAccountStateChangeListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        setSupportActionBar(toolbar)
 
         val toggle = ActionBarDrawerToggle(
             this,
@@ -41,6 +44,9 @@ class MainActivity : AppCompatActivity(), OnAccountStateChangeListener {
         initNavigationView()
 
         AccountManager.onAccountStateChangeListeners.add(this)
+
+        showFragment(R.id.fragmentContainer, AboutFragment::class.java)
+        title = "About"
     }
 
     override fun onDestroy() {
@@ -49,13 +55,15 @@ class MainActivity : AppCompatActivity(), OnAccountStateChangeListener {
     }
 
     private fun initNavigationView() {
+        // 如果 AccountManager.currentUser ！= null，则进入let
+        // 如果 AccountManager.currentUser = = null，那么 执行运算符?: 后面的逻辑
         AccountManager.currentUser?.let(::updateNavigationView) ?: clearNavigationView()
         initNavigationHeaderEvent()
     }
 
     private fun initNavigationHeaderEvent() {
         navigationView.doOnLayoutAvailable {
-            navigationHeader.onClick {
+            navigationHeader.setOnClickListener {
                 AccountManager.isLoggedIn()
                     .no {
                         startLoginActivity()
