@@ -1,14 +1,15 @@
 package com.bennyhuo.github.view.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import cn.carbs.android.avatarimageview.library.AvatarImageView
 import com.xuge.imooc232.R
+import com.xuge.imooc232.utils.avatarImageView
 import com.xuge.imooc232.utils.markdownText
 import org.jetbrains.anko.*
+import org.jetbrains.anko.custom.ankoView
 import org.jetbrains.anko.sdk15.listeners.onClick
 import org.jetbrains.anko.support.v4.UI
 import org.jetbrains.anko.support.v4.nestedScrollView
@@ -28,13 +29,20 @@ class AboutFragmentUI : AnkoComponent<AboutFragment> {
         return ui.apply {
             nestedScrollView {
                 verticalLayout {
+
+                    avatarImageView {
+                        setTextAndColorSeed("X", "1234")
+                    }.lparams(width = dip(60), height = dip(60)) {
+                        gravity = Gravity.CENTER_HORIZONTAL
+                    }
+
                     imageView {
                         imageResource = R.mipmap.ic_launcher
                     }.lparams(width = wrapContent, height = wrapContent) {
                         gravity = Gravity.CENTER_HORIZONTAL
                     }
 
-                    themedTextView ("Github",R.style.detail_title) {
+                    themedTextView("Github", R.style.detail_title) {
                         textColor = R.color.colorPrimary
 
                     }.lparams(width = wrapContent, height = wrapContent) {
@@ -69,8 +77,8 @@ class AboutFragmentUI : AnkoComponent<AboutFragment> {
                 }.lparams(width = wrapContent, height = wrapContent) {
                     gravity = Gravity.CENTER
                 }
+
             }
         }.view
     }
-
 }
