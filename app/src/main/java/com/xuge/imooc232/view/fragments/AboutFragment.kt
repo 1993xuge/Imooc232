@@ -34,21 +34,21 @@ class AboutFragmentUI : AnkoComponent<AboutFragment> {
                         gravity = Gravity.CENTER_HORIZONTAL
                     }
 
-                    textView("Github") {
+                    themedTextView ("Github",R.style.detail_title) {
                         textColor = R.color.colorPrimary
 
                     }.lparams(width = wrapContent, height = wrapContent) {
                         gravity = Gravity.CENTER_HORIZONTAL
                     }
 
-                    textView("By Xuge") {
+                    themedTextView("By Xuge", R.style.detail_description) {
                         textColor = R.color.colorPrimary
 
                     }.lparams(width = wrapContent, height = wrapContent) {
                         gravity = Gravity.CENTER_HORIZONTAL
                     }
 
-                    textView(R.string.open_source_licenses) {
+                    themedTextView(R.string.open_source_licenses, R.style.detail_description) {
                         textColor = R.color.colorPrimary
                         setOnClickListener {
                             alert {
