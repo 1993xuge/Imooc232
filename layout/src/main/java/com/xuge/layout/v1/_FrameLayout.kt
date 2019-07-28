@@ -13,19 +13,4 @@ class _FrameLayout(context: Context) : FrameLayout(context), DslViewParent<Frame
         get() {
             return lparams.gravity
         }
-
-    override var <T : View> T.layoutWidth: Int
-        set(value) {
-            lparams.width = value
-        }
-        get() = lparams.width
-
-    override var <T : View> T.layoutHeight: Int
-        set(value) {
-            lparams.height = value
-        }
-        get() = lparams.height
-
-    val <T : View> T.x1024: Int
-        get() = 1
 }

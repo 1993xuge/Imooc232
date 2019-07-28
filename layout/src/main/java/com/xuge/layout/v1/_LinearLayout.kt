@@ -18,16 +18,4 @@ class _LinearLayout(context: Context) : LinearLayout(context), DslViewParent<Lin
             lparams.gravity = value
         }
         get() = lparams.gravity
-
-    override var <T : View> T.layoutWidth: Int
-        set(value) {
-            lparams.width = value
-        }
-        get() = lparams.width
-
-    override var <T : View> T.layoutHeight: Int
-        set(value) {
-            lparams.height = value
-        }
-        get() = lparams.height
 }

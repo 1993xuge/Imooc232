@@ -5,14 +5,17 @@ import android.os.Bundle
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import com.bennyhuo.github.view.fragments.AboutFragment
 import com.bennyhuo.tieguanyin.annotations.ActivityBuilder
 import com.xuge.common.ext.no
 import com.xuge.common.ext.otherwise
+import com.xuge.common.log.logger
 import com.xuge.imooc232.R
 import com.xuge.imooc232.model.account.AccountManager
 import com.xuge.imooc232.model.account.OnAccountStateChangeListener
 import com.xuge.imooc232.network.entities.User
+import com.xuge.imooc232.network.services.RepositoryService
 import com.xuge.imooc232.utils.doOnLayoutAvailable
 import com.xuge.imooc232.utils.loadWithGlide
 import com.xuge.imooc232.utils.showFragment
@@ -22,6 +25,7 @@ import kotlinx.android.synthetic.main.nav_header_main.*
 import org.jetbrains.anko.imageResource
 import org.jetbrains.anko.sdk15.listeners.onClick
 import org.jetbrains.anko.toast
+import org.slf4j.LoggerFactory
 
 @ActivityBuilder(flags = [Intent.FLAG_ACTIVITY_CLEAR_TOP])
 class MainActivity : AppCompatActivity(), OnAccountStateChangeListener {
@@ -47,6 +51,12 @@ class MainActivity : AppCompatActivity(), OnAccountStateChangeListener {
 
         showFragment(R.id.fragmentContainer, AboutFragment::class.java)
         title = "About"
+
+        RepositoryService.listRepositoriesOfUser("1993xuge", 2, 20).subscribe({
+            logger.warn("Github Paging hasNext = ${it.hasNext}   Paging = $it")
+        }, {
+            it.printStackTrace()
+        })
     }
 
     override fun onDestroy() {
