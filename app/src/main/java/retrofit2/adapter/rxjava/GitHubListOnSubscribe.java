@@ -22,77 +22,81 @@ import rx.exceptions.*;
 import rx.plugins.RxJavaPlugins;
 
 final class GitHubListOnSubscribe<T> implements OnSubscribe<T> {
-  private final OnSubscribe<Response<T>> upstream;
+    private final OnSubscribe<Response<T>> upstream;
 
-  GitHubListOnSubscribe(OnSubscribe<Response<T>> upstream) {
-    this.upstream = upstream;
-  }
-
-  @Override
-  public void call(Subscriber<? super T> subscriber) {
-    upstream.call(new BodySubscriber<T>(subscriber));
-  }
-
-  private static class BodySubscriber<GitHubPagingBody> extends Subscriber<Response<GitHubPagingBody>> {
-    private final Subscriber<? super GitHubPagingBody> subscriber;
-    /** Indicates whether a terminal event has been sent to {@link #subscriber}. */
-    private boolean subscriberTerminated;
-
-    BodySubscriber(Subscriber<? super GitHubPagingBody> subscriber) {
-      super(subscriber);
-      this.subscriber = subscriber;
+    GitHubListOnSubscribe(OnSubscribe<Response<T>> upstream) {
+        this.upstream = upstream;
     }
 
     @Override
-    public void onNext(Response<GitHubPagingBody> response) {
-      if (response.isSuccessful()) {
-        GitHubPaging<?> paging;
-        if(response.body() instanceof GitHubPaging){
-          paging = (GitHubPaging<?>) response.body();
-        } else {
-          throw new IllegalArgumentException("response.body type error: " + response.body().getClass());
-        }
-        String link = response.headers().get("link");
-        if(link != null){
-          paging.setupLinks(link);
-        }
-        subscriber.onNext(response.body());
-      } else {
-        subscriberTerminated = true;
-        Throwable t = new HttpException(response);
-        try {
-          subscriber.onError(t);
-        } catch (OnCompletedFailedException
-            | OnErrorFailedException
-            | OnErrorNotImplementedException e) {
-          RxJavaPlugins.getInstance().getErrorHandler().handleError(e);
-        } catch (Throwable inner) {
-          Exceptions.throwIfFatal(inner);
-          CompositeException composite = new CompositeException(t, inner);
-          RxJavaPlugins.getInstance().getErrorHandler().handleError(composite);
-        }
-      }
+    public void call(Subscriber<? super T> subscriber) {
+        upstream.call(new BodySubscriber<T>(subscriber));
     }
 
-    @Override
-    public void onError(Throwable throwable) {
-      if (!subscriberTerminated) {
-        subscriber.onError(throwable);
-      } else {
-        // This should never happen! onNext handles and forwards errors automatically.
-        Throwable broken = new AssertionError(
-            "This should never happen! Report as a Retrofit bug with the full stacktrace.");
-        //noinspection UnnecessaryInitCause Two-arg AssertionError constructor is 1.7+ only.
-        broken.initCause(throwable);
-        RxJavaPlugins.getInstance().getErrorHandler().handleError(broken);
-      }
-    }
+    private static class BodySubscriber<GitHubPagingBody> extends Subscriber<Response<GitHubPagingBody>> {
+        private final Subscriber<? super GitHubPagingBody> subscriber;
+        /**
+         * Indicates whether a terminal event has been sent to {@link #subscriber}.
+         */
+        private boolean subscriberTerminated;
 
-    @Override
-    public void onCompleted() {
-      if (!subscriberTerminated) {
-        subscriber.onCompleted();
-      }
+        BodySubscriber(Subscriber<? super GitHubPagingBody> subscriber) {
+            super(subscriber);
+            this.subscriber = subscriber;
+        }
+
+        @Override
+        public void onNext(Response<GitHubPagingBody> response) {
+            if (response.isSuccessful()) {
+                GitHubPaging<?> paging;
+                if (response.body() instanceof GitHubPaging) {
+                    paging = (GitHubPaging<?>) response.body();
+                } else if (response.body() instanceof PagingWrapper) {
+                    paging = ((PagingWrapper) response.body()).getPaging();
+                } else {
+                    throw new IllegalArgumentException("response.body type error: " + response.body().getClass());
+                }
+                String link = response.headers().get("link");
+                if (link != null) {
+                    paging.setupLinks(link);
+                }
+                subscriber.onNext(response.body());
+            } else {
+                subscriberTerminated = true;
+                Throwable t = new HttpException(response);
+                try {
+                    subscriber.onError(t);
+                } catch (OnCompletedFailedException
+                        | OnErrorFailedException
+                        | OnErrorNotImplementedException e) {
+                    RxJavaPlugins.getInstance().getErrorHandler().handleError(e);
+                } catch (Throwable inner) {
+                    Exceptions.throwIfFatal(inner);
+                    CompositeException composite = new CompositeException(t, inner);
+                    RxJavaPlugins.getInstance().getErrorHandler().handleError(composite);
+                }
+            }
+        }
+
+        @Override
+        public void onError(Throwable throwable) {
+            if (!subscriberTerminated) {
+                subscriber.onError(throwable);
+            } else {
+                // This should never happen! onNext handles and forwards errors automatically.
+                Throwable broken = new AssertionError(
+                        "This should never happen! Report as a Retrofit bug with the full stacktrace.");
+                //noinspection UnnecessaryInitCause Two-arg AssertionError constructor is 1.7+ only.
+                broken.initCause(throwable);
+                RxJavaPlugins.getInstance().getErrorHandler().handleError(broken);
+            }
+        }
+
+        @Override
+        public void onCompleted() {
+            if (!subscriberTerminated) {
+                subscriber.onCompleted();
+            }
+        }
     }
-  }
 }

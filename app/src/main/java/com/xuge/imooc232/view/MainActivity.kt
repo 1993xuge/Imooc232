@@ -17,6 +17,7 @@ import com.xuge.imooc232.model.account.OnAccountStateChangeListener
 import com.xuge.imooc232.network.entities.User
 import com.xuge.imooc232.network.services.RepositoryService
 import com.xuge.imooc232.utils.doOnLayoutAvailable
+import com.xuge.imooc232.utils.format
 import com.xuge.imooc232.utils.loadWithGlide
 import com.xuge.imooc232.utils.showFragment
 import kotlinx.android.synthetic.main.activity_main.*
@@ -26,6 +27,7 @@ import org.jetbrains.anko.imageResource
 import org.jetbrains.anko.sdk15.listeners.onClick
 import org.jetbrains.anko.toast
 import org.slf4j.LoggerFactory
+import java.util.*
 
 @ActivityBuilder(flags = [Intent.FLAG_ACTIVITY_CLEAR_TOP])
 class MainActivity : AppCompatActivity(), OnAccountStateChangeListener {
@@ -52,11 +54,18 @@ class MainActivity : AppCompatActivity(), OnAccountStateChangeListener {
         showFragment(R.id.fragmentContainer, AboutFragment::class.java)
         title = "About"
 
-        RepositoryService.listRepositoriesOfUser("1993xuge", 2, 20).subscribe({
-            logger.warn("Github Paging hasNext = ${it.hasNext}   Paging = $it")
-        }, {
-            it.printStackTrace()
-        })
+//        RepositoryService.listRepositoriesOfUser("1993xuge", 2, 20).subscribe({
+//            logger.warn("Github Paging hasNext = ${it.hasNext}   Paging = $it")
+//        }, {
+//            it.printStackTrace()
+//        })
+
+        RepositoryService.allRepositories(2, "pushed:<" + Date().format("yyyy-MM-dd"))
+            .subscribe({
+                logger.debug("Paging: hasNext=${it.paging.hasNext}, hasPrev=${it.paging.hasPrev}")
+            },{
+                it.printStackTrace()
+            })
     }
 
     override fun onDestroy() {
